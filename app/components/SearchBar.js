@@ -7,8 +7,12 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { getThemeColors } from "../../constants/theme";
+import { useTheme } from "../context/ThemeContext";
 
 export default function SearchBar({ onSearch, loading }) {
+  const { isDarkMode } = useTheme();
+  const colors = getThemeColors(isDarkMode);
   const [city, setCity] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -27,19 +31,23 @@ export default function SearchBar({ onSearch, loading }) {
       <View
         style={[
           styles.inputContainer,
-          isFocused && styles.inputContainerFocused,
+          { backgroundColor: colors.card, borderColor: colors.cardLight },
+          isFocused && {
+            backgroundColor: `${colors.primary}08`,
+            borderColor: colors.primary,
+          },
         ]}
       >
         <Feather
           name="search"
           size={20}
-          color={isFocused ? "#4A90E2" : "rgba(255, 255, 255, 0.4)"}
+          color={isFocused ? colors.primary : colors.textTertiary}
           style={styles.searchIcon}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, { color: colors.textPrimary }]}
           placeholder="Search for a city..."
-          placeholderTextColor="rgba(255, 255, 255, 0.4)"
+          placeholderTextColor={colors.textTertiary}
           value={city}
           onChangeText={setCity}
           onSubmitEditing={handlePress}
@@ -50,12 +58,16 @@ export default function SearchBar({ onSearch, loading }) {
         />
         {city.length > 0 && (
           <TouchableOpacity onPress={handleClear} disabled={loading}>
-            <Feather name="x" size={20} color="rgba(255, 255, 255, 0.5)" />
+            <Feather name="x" size={20} color={colors.textSecondary} />
           </TouchableOpacity>
         )}
       </View>
       <TouchableOpacity
-        style={[styles.button, loading && styles.buttonDisabled]}
+        style={[
+          styles.button,
+          { backgroundColor: colors.primary },
+          loading && styles.buttonDisabled,
+        ]}
         onPress={handlePress}
         disabled={loading || !city.trim()}
       >

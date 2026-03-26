@@ -1,5 +1,7 @@
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
+import { getThemeColors } from "../../constants/theme";
+import { useTheme } from "../context/ThemeContext";
 import {
     getHumidityLevel,
     getTempColor,
@@ -9,6 +11,9 @@ import {
 } from "../utils/helpers";
 
 export default function WeatherCard({ weather }) {
+  const { isDarkMode } = useTheme();
+  const colors = getThemeColors(isDarkMode);
+
   if (
     !weather ||
     !weather.weather ||

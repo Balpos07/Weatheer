@@ -1,5 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
+import { getThemeColors } from "../../constants/theme";
+import { useTheme } from "../context/ThemeContext";
 import {
     formatDate,
     getTempColor,
@@ -8,6 +10,9 @@ import {
 } from "../utils/helpers";
 
 export default function ForecastItem({ item, index }) {
+  const { isDarkMode } = useTheme();
+  const colors = getThemeColors(isDarkMode);
+
   if (!item || !item.main || !item.weather || !item.weather[0]) {
     return null;
   }
