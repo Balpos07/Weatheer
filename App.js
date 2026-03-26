@@ -11,24 +11,20 @@ import { getThemeColors } from "./constants/theme";
 const Stack = createStackNavigator();
 
 function RootNavigator() {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, toggleTheme } = useTheme();
   const colors = getThemeColors(isDarkMode);
 
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={({ navigation }) => ({
+      screenOptions={{
         headerStyle: { backgroundColor: colors.card },
         headerTintColor: colors.textPrimary,
         headerTitleStyle: { fontWeight: "bold", color: colors.textPrimary },
         headerRight: () => (
           <TouchableOpacity
-            onPress={() => {
-              // Trigger theme toggle - we'll pass it through a different method
-              const themeContext = useTheme();
-              themeContext.toggleTheme();
-            }}
-            style={{ marginRight: 16 }}
+            onPress={toggleTheme}
+            style={{ marginRight: 16, padding: 8 }}
           >
             <Feather
               name={isDarkMode ? "sun" : "moon"}
@@ -37,7 +33,7 @@ function RootNavigator() {
             />
           </TouchableOpacity>
         ),
-      })}
+      }}
     >
       <Stack.Screen
         name="Home"
